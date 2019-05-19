@@ -4,6 +4,8 @@ function FormInput({
                        data,
                        type,
                        changeType,
+                       formValues,
+                       setValue
                    }) {
 
     const setInputType = (data) => {
@@ -42,13 +44,20 @@ function FormInput({
                 );
                 return element;
             default:
+                if(!type) return null;
                 element = (
                     <form>
-                        <div className="d-flex form-group">
-                            <label className="mr-2">
+                        <div className="mx-2 row form-group">
+                            <label className="col-3">
                                 {data.name}
                             </label>
-                            <input type="email" className="form-control" id={data.id}>
+                            <input
+                                value={formValues[type][data.id]}
+                                onChange={(e) => setValue(e, type, data.id)}
+                                type="text"
+                                className="form-control col-9"
+                                id={data.id}
+                            >
                             </input>
                         </div>
                     </form>

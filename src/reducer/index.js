@@ -2,30 +2,32 @@ const initialState = {
     type: null,
     page: 'home',
     formPage: 1,
-    individual_organization: {
-        OGRNIP: '',
-        SNILS: '',
-        INN: '',
-        E: '',
-    },
-    organization: {
-        O: '',
-        OU: '',
-        T: '',
-        OGRN: '',
-        SNILS: '',
-        INN: '',
-        E: '',
-    },
-    personal: {
-        CN: '',
-        SN: '',
-        G: '',
-        C: '',
-        S: '',
-        L: '',
-        STREET: '',
-    },
+    formValues: {
+        individual_organization: {
+            OGRNIP: '',
+            SNILS: '',
+            INN: '',
+            E: '',
+        },
+        organization: {
+            O: '',
+            OU: '',
+            T: '',
+            OGRN: '',
+            SNILS: '',
+            INN: '',
+            E: '',
+        },
+        personal: {
+            CN: '',
+            SN: '',
+            G: '',
+            C: '',
+            S: '',
+            L: '',
+            STREET: '',
+        },
+    }
 };
 
 export default function reducer(state = initialState, action) {
@@ -38,30 +40,32 @@ export default function reducer(state = initialState, action) {
         case 'CLEAR_FORM_VALUES':
             return {
                 ...state,
-                individual_organization: {
-                    OGRNIP: '',
-                    SNILS: '',
-                    INN: '',
-                    E: '',
-                },
-                organization: {
-                    O: '',
-                    OU: '',
-                    T: '',
-                    OGRN: '',
-                    SNILS: '',
-                    INN: '',
-                    E: '',
-                },
-                personal: {
-                    CN: '',
-                    SN: '',
-                    G: '',
-                    C: '',
-                    S: '',
-                    L: '',
-                    STREET: '',
-                },
+                formValues: {
+                    individual_organization: {
+                        OGRNIP: '',
+                        SNILS: '',
+                        INN: '',
+                        E: '',
+                    },
+                    organization: {
+                        O: '',
+                        OU: '',
+                        T: '',
+                        OGRN: '',
+                        SNILS: '',
+                        INN: '',
+                        E: '',
+                    },
+                    personal: {
+                        CN: '',
+                        SN: '',
+                        G: '',
+                        C: '',
+                        S: '',
+                        L: '',
+                        STREET: '',
+                    },
+                }
             };
 
         case 'SET_PAGE':
@@ -74,6 +78,21 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 formPage: action.page,
+            };
+
+        case 'SET_FIELD_VALUE':
+            console.log(action.data.type,
+                action.data.field,
+                action.data.value);
+            return {
+                ...state,
+                formValues: {
+                    ...state.formValues,
+                    [action.data.type]: {
+                        ...state.formValues[action.data.type],
+                        [action.data.field]: action.data.value,
+                    }
+                },
             };
 
         default:

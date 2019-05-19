@@ -12,7 +12,9 @@ function CertificateFormContainer({
                                       setPage,
                                       setFormPage,
                                       type,
-                         }) {
+                                      changeType,
+                                      clearFormValues
+}) {
 
     const visibleFields = () => {
         if (formPage === 1) {
@@ -20,12 +22,12 @@ function CertificateFormContainer({
                 [{"name":"ТИП",
                     "id":"type",
                     "values":[
-                        {"name":"Юр.лицо","value":"company"},
+                        {"name":"Юр.лицо","value":"organization"},
                         {"name":"ИП","value":"personal"}
                         ]}]
             );
         } else if (formPage === 2) {
-            return (type === 'company'
+            return (type === 'organization'
                 ? fields["organization"]
                 : fields["personal"]
                 );
@@ -36,6 +38,8 @@ function CertificateFormContainer({
 
     const changePage = (type) => {
         if (formPage === 1 && type === 'back') {
+            clearFormValues();
+            changeType(null);
             setPage('home');
         } else if (formPage === 3 && type === 'next') {
             setPage('home');
@@ -51,7 +55,16 @@ function CertificateFormContainer({
         switch (formPage) {
             case 1:
                 return valid = !!type;
+            case 2:
+                return valid = isFormValid("organization")
+                    || isFormValid("personal");
+            case 3:
+                return valid = isFormValid("individual_organization");
         }
+    };
+
+    const isFormValid = (formFields) => {
+        console.log('formFields', fields[formFields]);
     };
 
     return (
@@ -73,6 +86,7 @@ const mapDispatchToProps = {
     setPage: actions.setPage,
     changeType: actions.changeType,
     setFormPage: actions.setFormPage,
+    clearFormValues: actions.clearFormValues,
 };
 
 export default connect(

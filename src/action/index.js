@@ -17,9 +17,15 @@ const setFormPage = (page) => ({
     page,
 });
 
+const setFieldValue = (data) => ({
+    type: 'SET_FIELD_VALUE',
+    data,
+});
+
 export default {
     changeType,
     clearFormValues,
     setPage,
     setFormPage,
+    setFieldValue,
 }
