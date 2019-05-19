@@ -5,7 +5,9 @@ function FormInput({
                        type,
                        changeType,
                        formValues,
-                       setValue
+                       formPage,
+                       setValue,
+                       checkFiled
                    }) {
 
     const setInputType = (data) => {
@@ -45,17 +47,21 @@ function FormInput({
                 return element;
             default:
                 if(!type) return null;
+                const formType = formPage === 2 ? 'personal' : type;
+                const valid = checkFiled(formType, data.id);
                 element = (
                     <form>
                         <div className="mx-2 row form-group">
                             <label className="col-3">
                                 {data.name}
+                                <sup className="text-danger">*</sup>
                             </label>
                             <input
-                                value={formValues[type][data.id]}
-                                onChange={(e) => setValue(e, type, data.id)}
+                                autocomplete="off"
+                                value={formValues[formType][data.id]}
+                                onChange={(e) => setValue(e, formType, data.id)}
                                 type="text"
-                                className="form-control col-9"
+                                className={`form-control col-9 ${valid}`}
                                 id={data.id}
                             >
                             </input>

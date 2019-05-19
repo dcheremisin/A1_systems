@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import CertificateForm from '../presentational-components/CertificateForm';
 import actions from '../action';
 import fields from '../../test/fields.json';
-
+import { validates, regexpEmail } from '../helpers.js';
 import '../styles/CertificateForm.scss';
 
 function CertificateFormContainer({
@@ -13,7 +13,8 @@ function CertificateFormContainer({
                                       setFormPage,
                                       type,
                                       changeType,
-                                      clearFormValues
+                                      clearFormValues,
+                                      formValues
 }) {
 
     const visibleFields = () => {
@@ -23,16 +24,16 @@ function CertificateFormContainer({
                     "id":"type",
                     "values":[
                         {"name":"Юр.лицо","value":"organization"},
-                        {"name":"ИП","value":"personal"}
+                        {"name":"ИП","value":"individual_organization"}
                         ]}]
             );
         } else if (formPage === 2) {
+            return fields["personal"];
+        } else if (formPage === 3) {
             return (type === 'organization'
                 ? fields["organization"]
-                : fields["personal"]
+                : fields["individual_organization"]
                 );
-        } if (formPage === 3) {
-            return fields["individual_organization"];
         }
     };
 
@@ -56,15 +57,37 @@ function CertificateFormContainer({
             case 1:
                 return valid = !!type;
             case 2:
-                return valid = isFormValid("organization")
-                    || isFormValid("personal");
+                return valid = isFormValid("personal");
             case 3:
-                return valid = isFormValid("individual_organization");
+                return valid = isFormValid("organization")
+                    || isFormValid("individual_organization");
         }
     };
 
     const isFormValid = (formFields) => {
-        console.log('formFields', fields[formFields]);
+        let pass = true;
+        const mask = validates[formFields];
+        const values = formValues[formFields];
+        for (let key in mask) {
+            if (values[key].length === 0) {
+                pass = false;
+            }
+            if (mask[key].fieldLength
+                && values[key].length !== mask[key].fieldLength) {
+                pass = false;
+            }
+            if (mask[key].type === 'number'
+                && !(Number.isInteger(Number(values[key]))
+                && values[key] > 0)) {
+                pass = false;
+            }
+            if (mask[key].type === 'email'
+                && !regexpEmail.test(values[key])) {
+                pass = false;
+            }
+        }
+
+        return pass;
     };
 
     return (
@@ -80,6 +103,7 @@ const mapStateToProps = state => ({
     type: state.type,
     page: state.page,
     formPage: state.formPage,
+    formValues: state.formValues,
 });
 
 const mapDispatchToProps = {

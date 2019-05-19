@@ -81,9 +81,6 @@ export default function reducer(state = initialState, action) {
             };
 
         case 'SET_FIELD_VALUE':
-            console.log(action.data.type,
-                action.data.field,
-                action.data.value);
             return {
                 ...state,
                 formValues: {
