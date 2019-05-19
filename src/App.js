@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Certificate from './container-components/Certificate'
+import CertificateContainer from './container-components/Certificate'
 
 import './styles/App.scss';
 
@@ -15,7 +15,7 @@ class App extends Component {
                 <div
                     className="main"
                 >
-                    <Certificate />
+                    <CertificateContainer />
                 </div>
             </div>
         );

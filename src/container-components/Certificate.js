@@ -1,21 +1,42 @@
-import React from "react";
-import { useState } from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
+import Certificate from '../presentational-components/Certificate'
+import actions from '../action';
 
-function Certificate() {
-    const [page, setPage] = useState('home');
+function CertificateContainer({
+                                  page,
+                                  setPage,
+                                  setFormPage,
+                                  changeType,
+                                  clearFormValues
+}) {
 
-    return (
-        <div className="container">
-            {page === 'home' && (
-                <button
-                    className="start-button btn btn-primary"
-                    onClick={() => setPage(1)}
-                >
-                    Создать заявку
-                </button>
-            )}
-        </div>
-    );
+    const setHomePage = () => {
+        clearFormValues();
+        setFormPage(1);
+        changeType(null);
+        setPage('home');
+    };
+
+    return <Certificate
+        page={page}
+        setPage={setPage}
+        setHomePage={setHomePage}
+    />;
 }
 
-export default Certificate;
+const mapStateToProps = state => ({
+  page: state.page,
+});
+
+const mapDispatchToProps = {
+    clearFormValues: actions.clearFormValues,
+    setPage: actions.setPage,
+    changeType: actions.changeType,
+    setFormPage: actions.setFormPage,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CertificateContainer);
