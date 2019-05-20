@@ -37,13 +37,22 @@ function CertificateFormContainer({
         }
     };
 
+    const showResult = () => {
+        let params = Object.assign(formValues.personal, formValues[type]);
+        console.log('"params":', JSON.stringify(params));
+        clearFormValues();
+        changeType(null);
+        setFormPage(1);
+        setPage('home');
+    };
+
     const changePage = (type) => {
         if (formPage === 1 && type === 'back') {
             clearFormValues();
             changeType(null);
             setPage('home');
         } else if (formPage === 3 && type === 'next') {
-            setPage('home');
+            showResult();
         } else if (type === 'next') {
             setFormPage(formPage + 1);
         } else if (type === 'back') {
@@ -95,6 +104,7 @@ function CertificateFormContainer({
             changePage={changePage}
             visibleFields={visibleFields()}
             isFieldsValid={isFieldsValid}
+            formPage={formPage}
         />
     );
 }

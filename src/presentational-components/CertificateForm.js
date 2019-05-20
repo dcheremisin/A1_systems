@@ -6,7 +6,8 @@ import '../styles/CertificateForm.scss';
 function CertificateForm({
                              changePage,
                              visibleFields,
-                             isFieldsValid
+                             isFieldsValid,
+                             formPage
                          }) {
     return  (
         <div className="container form-container p-2">
@@ -28,7 +29,7 @@ function CertificateForm({
                     className="btn btn-outline-secondary"
                     onClick={() => changePage('next')}
                 >
-                    Продолжить
+                    { formPage === 3 ? 'Отправить' : 'Продолжить'}
                 </button>
             </section>
         </div>
